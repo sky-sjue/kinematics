@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Relativistic Kinematics Calculator for Two-Body Nuclear Reactions</title>
+<script src="src/togtext4.js"></script>
+<script src="src/inpopts4.js"></script>
+<script src="src/masstab.js"></script>
+<script src="src/massr.js"></script>
+<script src="src/keyer4.js"></script>
+<script src="src/kclas4.js"></script>
+<script src="src/kplot4.js"></script>
+<script src="src/kform4.js"></script>
+<link rel="stylesheet" href="src/kin.css">
+</head>
+
+<body onload="toggleintro(false)">
+<div>
+
+<!--            
+remaining to-do list:
+*make an example
+*new tutorial page
+*more control of all plot text?
+*add select all for previous reactions
+-->
+
+<div class="fortop0">
+  <div class="fortop1"><img src="src/kinicon.png" width="65" height="66" alt="kinematics calculator icon"></div>
+  <div class="fortop2"><h1>Two-Body Kinematics Calculator and Plotter</h1></div>
+</div>
+<div style="width:100%">
+<div id="intro">
+</div>
+
+<form id="kinform">
+  <div class="t1">
+    <div class="c1t">
+      Projectile (m<sub>1</sub>):
+    </div>
+    <div class="c1">
+      Target (m<sub>2</sub>):
+    </div>
+    <div class="c1">
+      Ejectile (m<sub>3</sub>):
+    </div>
+    <div class="c1">
+      Recoil (m<sub>4</sub>):
+    </div>
+  </div>
+  <div class="t2">
+    <div class="c2">
+      <input type="text" name="mtar" value="" style="width:100px;">
+      <input type="radio" name="mtarunit" value="iso" checked> <sup>A</sup>El
+      <input type="radio" name="mtarunit" value="amu"> AMU
+      <input type="radio" name="mtarunit" value="mev"> MeV
+      <span id="m1echo"></span>
+    </div>
+    <div class="c2">
+      <input type="text" name="mpro" value="" style="width:100px;">
+      <input type="radio" name="mprounit" value="iso" checked> <sup>A</sup>El
+      <input type="radio" name="mprounit" value="amu" > AMU
+      <input type="radio" name="mprounit" value="mev" > MeV 
+      <span id="m2echo"></span>
+    </div>
+    <div class="c2">
+      <input type="text" name="mejc" value="" style="width:100px;">
+      <input type="radio" name="mejcunit" value="iso" checked> <sup>A</sup>El
+      <input type="radio" name="mejcunit" value="amu" > AMU
+      <input type="radio" name="mejcunit" value="mev" > MeV
+      <span id="m3echo"></span>
+    </div>
+    <div class="c2">
+      <input type="text" name="mrec" value="" style="width:100px;">
+      <input type="radio" name="mrecunit" value="iso" checked> <sup>A</sup>El
+      <input type="radio" name="mrecunit" value="amu" > AMU
+      <input type="radio" name="mrecunit" value="mev" > MeV
+      <span id="m4echo"></span>
+    </div>
+  </div>
+  <div class="buff"></div>
+  <div class="t1">
+    <div class="c1">
+      Projectile 
+      <select class="selstyle" name="ekinis">
+      <option value="kinetic"  selected>Kinetic Energy</option>
+      <option value="total"   >Total Energy</option>
+      <option value="momentum">Momentum</option>
+      </select>:
+    </div>
+    <div class="c1">
+      Ejectile Excitation Energy:
+    </div>
+    <div class="c1">
+      Recoil Excitation Energy:
+    </div>
+  </div>  
+  <div class="t2">
+    <div class="c2">
+      <input type="text" name="ekin" value="" style="width:100px;">
+      <select class="selstyle" name="ekunits">
+      <option value="keV" >keV</option>
+      <option value="MeV" selected="selected">MeV</option>
+      <option value="GeV" >GeV</option>
+      <option value="TeV" >TeV</option>
+      </select>
+    </div>
+    <div class="c2">
+      <input type="text" name="e_ex" value="" style="width:100px;"> MeV
+    </div>
+    <div class="c2">
+      <input type="text" name="r_ex" value="" style="width:100px;"> MeV
+    </div>
+  </div>
+  <div class="buff"></div>
+  <div class="t1">
+    <div class="c1">
+      Plot Abscissa (x-axis): 
+    </div>
+    <div class="c1">
+      Plot Ordinate (y-axis): 
+    </div>
+    <div class="c1">
+      Express angles in:
+    </div>
+    <div class="c1">
+      Express energy as:
+    </div>
+   </div>
+  <div class="t2">
+    <div class="c2">
+      <input type="radio" name="xaxis" value="1"  checked><em>&theta;</em><sub>3</sub>
+      <input type="radio" name="xaxis" value="2"  ><em>&theta;</em><sub>4</sub>
+      <input type="radio" name="xaxis" value="3"  ><em>&theta;</em><sub>3cm</sub>
+      <input type="radio" name="xaxis" value="4"  >cos(<em>&theta;</em><sub>3cm</sub>)
+      <input type="radio" name="xaxis" value="5"  ><em>E</em><sub>3</sub>
+      <input type="radio" name="xaxis" value="6"  ><em>E</em><sub>4</sub>
+      <input type="radio" name="xaxis" value="7"  ><em>v</em><sub>3</sub>
+      <input type="radio" name="xaxis" value="8"  ><em>v</em><sub>4</sub>
+      <input type="radio" name="xaxis" value="9"  ><em>d&Omega;</em><sub>3</sub>/<em>d&Omega;<sub>cm</sub></em>
+      <input type="radio" name="xaxis" value="10" ><em>d&Omega;</em><sub>4</sub>/<em>d&Omega;<sub>cm</sub></em>
+    </div>
+    <div class="c2">
+      <input type="radio" name="yaxis" value="1"  ><em>&theta;</em><sub>3</sub>
+      <input type="radio" name="yaxis" value="2"  ><em>&theta;</em><sub>4</sub>
+      <input type="radio" name="yaxis" value="3"  ><em>&theta;</em><sub>3cm</sub>
+      <input type="radio" name="yaxis" value="4"  >cos(&theta;</em><sub>3cm</sub>)
+      <input type="radio" name="yaxis" value="5"  checked><em>E</em><sub>3</sub>
+      <input type="radio" name="yaxis" value="6"  ><em>E</em><sub>4</sub>
+      <input type="radio" name="yaxis" value="7"  ><em>v</em><sub>3</sub>
+      <input type="radio" name="yaxis" value="8"  ><em>v</em><sub>4</sub>
+      <input type="radio" name="yaxis" value="9"  ><em>d&Omega;</em><sub>3</sub>/<em>d&Omega;<sub>cm</sub></em>
+      <input type="radio" name="yaxis" value="10" ><em>d&Omega;</em><sub>4</sub>/<em>d&Omega;<sub>cm</sub></em>
+    </div>
+    <div class="c2">
+      <select class="selstyle" name="angunit" onchange="angwarn()">
+      <option value="deg" selected>degrees           </option>
+      <option value="rad"   >radians           </option>
+      <option value="mrad"  >milliradians      </option>
+      <option value="cdeg"  >90-&theta; degrees</option>
+      <option value="crad"  >&#x1D7B9;/2-&theta; radians</option>
+      <option value="cmrad" >(&#x1D7B9;/2-&theta;) mrad</option>
+      </select>
+      <span id="cangwarn"></span>
+    </div>
+    <div class="c2">
+     <input type="radio" name="enunit" value="keV"  >keV
+     <input type="radio" name="enunit" value="MeV"  checked>MeV
+     <input type="radio" name="enunit" value="GeV"  >GeV
+     <input type="radio" name="enunit" value="TeV"  >TeV
+    </div>
+  </div>
+  <div class="buff"></div>
+
+  <div class="t1">
+    <div class="c1">
+    Plot options:
+    </div>
+  </div>
+  <div class="t2">
+    <div class="c2">
+    <select class="selstyle" name="plotoptions" onchange="pickplotopt()">
+    <option value="xtics"   >x tics</option>
+    <option value="ytics"   >y tics</option>
+    <option value="xlimits" >x limits</option>
+    <option value="ylimits" >y limits</option>
+    <option value="plotdims" selected>plot dimensions</option>
+    <option value="npoints" >number of points</option>
+    <option value="ticfontsz">tic font size</option>
+    <option value="ticdecimals">tic decimals</option>
+    </select>
+    </div>
+  </div>
+
+  <div id="po1" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   minimum x tic, x tic interval:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="xticmin" 
+    value="" 
+    style="width:100px;">
+   <input type="text" name="dxtic" 
+    value="" 
+    style="width:100px;">
+  </div>
+  </div>
+  </div>
+
+  <div id="po2" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   minimum y tic, y tic interval:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="yticmin" 
+    value="" 
+    style="width:100px;">
+   <input type="text" name="dytic" 
+    value="" 
+    style="width:100px;">
+  </div>
+  </div>
+  </div>
+
+  <div id="po3" style="display:none">
+  <div class="t1">
+  <div class="c1">
+   x minimum, x maximum:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="minofx" 
+    value="" 
+    style="width:100px;">
+   <input type="text" name="maxofx" 
+    value="" 
+    style="width:100px;">
+  </div>
+  </div>
+  </div>
+
+  <div id="po4" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   y minimum, y maximum:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="minofy" 
+    value="" 
+    style="width:100px;">
+   <input type="text" name="maxofy" 
+    value="" 
+    style="width:100px;"> 
+  </div>
+  </div>
+  </div>
+
+  <div id="po5" style="display:block;">
+  <div class="t1">
+  <div class="c1">
+   plot width, height:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="plotwidth" 
+    value="" style="width:100px;"> 
+   <input type="text" name="plotheight" 
+    value="" style="width:100px;"> pixels
+  </div>
+  </div>
+  </div>
+
+  <div id="po6" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   number of points:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="npoints" value="" style="width:100px;"> =n, will use 2n+1 values of cosine in CM frame
+  </div>
+  </div>
+  </div>
+
+  <div id="po7" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   tic font size:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="ticfontsize" 
+    value="" style="width:100px;"> (integer, default is 12 pix)
+  </div>
+  </div>
+  </div>
+
+  <div id="po8" style="display:none;">
+  <div class="t1">
+  <div class="c1">
+   xtic, ytic number of decimals:
+  </div>
+  </div>
+  <div class="t2">
+  <div class="c2">
+   <input type="text" name="xtdec" 
+    value="" style="width:100px;"> 
+   <input type="text" name="ytdec" 
+    value="" style="width:100px;"> 
+  </div>
+  </div>
+  </div>
+
+<div class="buff"></div>
+<div class="t1"><div class="c1"></div></div>
+<div class="t2"><div class="c2">
+<button type="button" onclick="readkform()">CALCULATE</button> 
+<span id="addrxnsadvice"></span>
+</div></div>
+<div class="buff"></div>
+
+<div id="rxnchks" style="clear:both; margin-left:25%"></div>
+</form>
+<div style="display:none" id="previousdata"></div>
+<div style="display:none" id="previoussrxn"></div>
+<div class="buff"></div>
+<canvas id="kplot" width="0px" height="0px"></canvas>
+<div id="kingout"></div>
+<p>Please do not hesitate to <a href="https://skisickness.com/about/">send an email</a> with any feedback; constructive suggestions to my liking might be implemented.  There are certainly still some small issues to fix.</p>
+<p style="font-style:italic;">
+&laquo; 29 September 2025: updated to 100% javascript! HTML5 is sick. &raquo;
+</p>
+</div>
+</div>
+</body>
+</html>
