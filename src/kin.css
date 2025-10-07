@@ -1,20 +1,44 @@
 body{font-family:Verdana, sans-serif;}
-.t1{clear:both; 
-    width:25%; 
-    float:left; 
-    text-align:right; 
-    margin:0px 0px 0px 0px;}
-.t2{width:70%; 
-    float:left; 
-    text-align:left; 
-    margin:0px 0px 0px 0px;}
-.c1{height:30px;  
-    margin:0px 5px 0px 0px;}
-.c1t{height:30px; 
-     margin:3px 5px 0px 0px;}
-.c2{height:30px; 
-    margin:0px 0px 0px 0px;}
+#kinform {
+  display: grid;
+  grid-template-columns: 25% 1fr;
+  column-gap: 3px;
+  grid-auto-flow: row dense;
+}
+.t1 {
+  display: contents;
+  float: none;
+  text-align:right;
+  width: auto;
+}
+.t2 {
+  display: contents;
+  float: none;
+  width: auto;
+}
+.c1, .c1t { grid-column: 1; }
+.c2, .c2f { grid-column: 2; }
+.c1, .c1t, .c2 {
+  height: auto;
+  min-height: 30px;
+  line-height: 1.5;
+  flex-wrap: wrap;
+  margin: 0 5px 0 0;
+}
 .c2f{margin:0px 0px 0px 0px;}
+
+#po1[style*="display:block"],
+#po2[style*="display:block"],
+#po3[style*="display:block"],
+#po4[style*="display:block"],
+#po5[style*="display:block"],
+#po6[style*="display:block"],
+#po7[style*="display:block"],
+#po8[style*="display:block"] {
+  display: contents !important;
+}
+
+.buff{ grid-column: 1 / -1; } /* Keep row elements aligned vertically */
 .buff{clear:both; 
       width:100%; 
       height:15px;}
