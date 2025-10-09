@@ -20,6 +20,8 @@ class twobody{
   this.ncoscm=500;
   this.cmcos3max=2.0;
   this.cmcos4max=2.0;
+  this.e3atmaxang=-1.0;
+  this.e4atmaxang=-1.0;
   this.angfact=180.0/Math.PI; 
   this.angunit="deg";
   this.enunit="MeV";
@@ -60,6 +62,7 @@ class twobody{
      patmax=(this.e03*Math.cos(this.theta3max)*this.thesinh)/
              (1.0+thetatest*thetatest*this.thesinh*this.thesinh);
      eatmax=Math.sqrt(patmax*patmax+this.m3*this.m3);
+     this.e3atmaxang=eatmax-this.m3;
      this.cmcos3max=(eatmax-this.e03*this.thecosh)/
                       (this.pcmp*this.thesinh);
     } 
@@ -67,7 +70,9 @@ class twobody{
    if( (this.m1+this.m2) == (this.m3+this.m4) ){
     if(thetatest > 0.9999 && thetatest < 1.001){
      this.theta3max=Math.PI/2.0;
-     this.cmcos3max=1.0; 
+     this.cmcos3max=-1.0; 
+     this.e3atmaxang=this.e03*this.thecosh
+                  +this.cmcos3max*this.pcmp*this.thesinh-this.m3;
     }
    }
    if(this.m4 > 0.0){
@@ -77,6 +82,7 @@ class twobody{
      patmax=(this.e04*Math.cos(this.theta4max)*this.thesinh)/
              (1.0+thetatest*thetatest*this.thesinh*this.thesinh);
      eatmax=Math.sqrt(patmax*patmax+this.m4*this.m4);
+     this.e4atmaxang=eatmax-this.m4;
      this.cmcos4max=(eatmax-this.e04*this.thecosh)/
                       (this.pcmp*this.thesinh);
     }
@@ -85,6 +91,8 @@ class twobody{
     if(thetatest > 0.9999 && thetatest < 1.001){
      this.theta4max=Math.PI/2.0;
      this.cmcos4max=1.0; 
+     this.e4atmaxang=this.e04*this.thecosh
+                     -this.cmcos4max*this.pcmp*this.thesinh-this.m4;
     }
    }
   }
@@ -240,16 +248,25 @@ class twobody{
   stext+=this.erounder(this.emax3)+".\n";
   stext+="<li>The minimum "+sejectile+" energy is ";
   stext+=this.erounder(this.emin3)+".\n";
-  if(this.cmcos3max < 2.0)
+  if(this.cmcos3max < 2.0){
    stext+="<li>The maximum "+sejectile+" angle is "+
     this.angrounder(this.theta3max)+".\n";
+   stext+="<li>The "+sejectile+" energy at angle "+
+    this.angrounder(this.theta3max)+" is "+
+    this.erounder(this.e3atmaxang)+".\n";
+    
+  }
   stext+="<li>The maximum "+srecoil+" energy is ";
   stext+=this.erounder(this.emax4)+".\n";
   stext+="<li>The minimum "+srecoil+" energy is ";
   stext+=this.erounder(this.emin4)+".\n";
-  if(this.cmcos4max < 2.0)
+  if(this.cmcos4max < 2.0){
    stext+="<li>The maximum "+srecoil+" angle is "+
     this.angrounder(this.theta4max)+".\n"; 
+   stext+="<li>The "+srecoil+" energy at angle "+
+    this.angrounder(this.theta4max)+" is "+
+    this.erounder(this.e4atmaxang)+".\n";
+  }
   stext+="</ul>\n";
   return stext;
  }//rxnsummary
