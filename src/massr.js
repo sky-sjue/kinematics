@@ -116,7 +116,7 @@ function getmass(amass, aunit, atext){
   mhtml=amass.toString()+" AMU";
  }else if(aunit === "mev"){
   if(dbgmassr)atext+="got into mev<br>";
-  massmev=amass;
+  massmev=parseFloat(amass);
   mhtml=amass.toString();
  }else if(aunit === "later"){
   if(dbgmassr)atext+="got into later<br>";
