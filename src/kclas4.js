@@ -181,7 +181,7 @@ class twobody{
    if(kx==10)
     if(ptot4 > 0.001)xnow=this.pcmp*this.pcmp/(ptot4*ptot4)
                           *(cosnow*ppar4/ptot4
-                            +sinnow*pperp4*this.thecosh/ptot4);
+                            -sinnow*pperp4*this.thecosh/ptot4);
    if(ky==1)ynow=q3;
    if(ky==2)ynow=q4;
    if(ky==3)ynow=qcm;
@@ -197,7 +197,7 @@ class twobody{
    if(ky==10)
     if(ptot4 > 0.001)ynow=this.pcmp*this.pcmp/(ptot4*ptot4)
                           *(cosnow*ppar4/ptot4
-                            +sinnow*pperp4*this.thecosh/ptot4);
+                            -sinnow*pperp4*this.thecosh/ptot4);
    pts.push(xnow); pts.push(ynow);
   }//icos loop
   return pts;
